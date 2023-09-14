@@ -1,0 +1,128 @@
+{
+	"info": {
+		"_postman_id": "c6f3415e-a2fe-4f24-ae7e-1ce581ee273a",
+		"name": "Rock Paper Scissor",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Start Player Game",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/games?playerName=Mauro",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"games"
+					],
+					"query": [
+						{
+							"key": "playerName",
+							"value": "Mauro"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Game By ID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/games/2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"games",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Play Round",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/games/2?playerChoice=PAPER",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"games",
+						"2"
+					],
+					"query": [
+						{
+							"key": "playerChoice",
+							"value": "PAPER"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Metrics List",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/actuator/metrics",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"actuator",
+						"metrics"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "End Game",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/games/3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"games",
+						"3"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
