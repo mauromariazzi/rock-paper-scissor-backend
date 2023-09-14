@@ -20,8 +20,15 @@ import com.example.rockpaperscissorbackend.exception.GameOverException;
 import com.example.rockpaperscissorbackend.model.Game;
 import com.example.rockpaperscissorbackend.service.GameService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 @RestController
 @RequestMapping("/api/v1/games")
+@Tag(name = "Rock Paper Scissor Game API")
 public class GameController {
 
   Logger logger = LoggerFactory.getLogger(GameController.class);
@@ -31,7 +38,14 @@ public class GameController {
 
   @PostMapping
   @ResponseStatus(value = HttpStatus.CREATED)
-  public Game startGame(@RequestParam("playerName") String playerName) {
+  @Operation(summary = "Start Game", 
+    description = "Returns a newly created game or the existing one if the Player had already started one")
+  @ApiResponses(value = {
+    @ApiResponse(responseCode = "201", description = "Game started"), 
+    @ApiResponse(responseCode = "404", description = "Need a playerName to start the Game")
+  })
+  public Game startGame(@RequestParam("playerName") 
+    @Parameter(name = "playerName", description = "Name of the Player") String playerName) {
     if(playerName !=  null) {
       return gameService.startGame(playerName);
     } else {
@@ -40,8 +54,14 @@ public class GameController {
   }
   
   @GetMapping("/{gameId}")
-  @ResponseStatus(value = HttpStatus.FOUND)
-  public Game getGame(@PathVariable("gameId") Long id) {
+  @ResponseStatus(value = HttpStatus.OK)
+  @Operation(summary = "Find Game by ID", 
+    description = "Returns a Game by its ID")
+  @ApiResponses(value = {
+    @ApiResponse(responseCode = "200", description = "Game found"), 
+    @ApiResponse(responseCode = "404", description = "Game not found")
+  })
+  public Game getGame(@PathVariable("gameId") @Parameter(name = "gameId", description = "ID of the Game") Long id) {
     try {
       return gameService.getGame(id);
     } catch (GameNotFoundException e) {
@@ -50,8 +70,14 @@ public class GameController {
   }
 
   @PutMapping("/{gameId}")
+  @Operation(summary = "End Game", 
+    description = "Changes the status of the current Game to FINISHED")
+  @ApiResponses(value = {
+    @ApiResponse(responseCode = "200", description = "Game updated"), 
+    @ApiResponse(responseCode = "404", description = "Game not found")
+  })
   @ResponseStatus(value = HttpStatus.OK)
-  public Game endGame(@PathVariable("gameId") Long id) {
+  public Game endGame(@PathVariable("gameId") @Parameter(name = "gameId", description = "ID of the Game") Long id) {
     try {
       return gameService.endGame(id);
     } catch (GameNotFoundException e) {
@@ -61,8 +87,15 @@ public class GameController {
 
   @PostMapping("/{gameId}")
   @ResponseStatus(value = HttpStatus.CREATED)
-  public Game playRound(@PathVariable("gameId") Long id,
-    @RequestParam("playerChoice") Choice playerChoice) {
+  @Operation(summary = "Play Round", 
+    description = "Create new Round of the current Game")
+  @ApiResponses(value = {
+    @ApiResponse(responseCode = "201", description = "Round created"), 
+    @ApiResponse(responseCode = "404", description = "Game not found or Game already finished")
+  })
+  public Game playRound(@PathVariable("gameId") @Parameter(name = "gameId", description = "ID of the Game") Long id,
+    @RequestParam("playerChoice") 
+      @Parameter(name = "playerChoice", description = "Choice (Rock, Paper or Scissor) of the Player") Choice playerChoice) {
     Choice computerChoice = Choice.getComputerChoice();
     try {
       return gameService.playRound(id, playerChoice, computerChoice);
